@@ -1,0 +1,20 @@
+Http Verbs / Http Methods
+============================
+GET - to read/retrieve data
+POST - Create data
+PUT - Update /Replace 
+PATCH - Partial Update
+DELETE - Delete
+
+REST - Representational State Transfer
+
+Status notations
+===================
+
+1xx series >> Informational
+2xx series >> Success
+3xx series >> Redirection
+4xx series >> Client Error
+5xx series >> Server Error
+
+
