@@ -76,6 +76,11 @@ app.get('/transactions', authMiddleware, (req,res)=> {
     res.status(200).json(result);
 });
 
+app.delete('/transactions/:id', authMiddleware, (req,res)=> {
+    const result = dataService.delTransactions(req, req.params.id);
+    res.status(200).json(result);
+});
+
 app.put('/', (req,res)=> {
     res.send("Put method!!")
 })
