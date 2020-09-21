@@ -24,7 +24,7 @@ app.use(logMiddleware);
 
 const authMiddleware = (req, res, next) => {
     if (!req.session.currentUser){
-        return res.status(401).json({
+        return res.json({
             status:false,
             statusCode: 401,
             message:'Please Login'
@@ -76,11 +76,6 @@ app.get('/transactions', authMiddleware, (req,res)=> {
     res.status(200).json(result);
 });
 
-app.delete('/transactions/:id', authMiddleware, (req,res)=> {
-    const result=dataService.delTransactions(req, req.params.id)
-    res.status(200).json(result);
-});
-
 app.put('/', (req,res)=> {
     res.send("Put method!!")
 })
@@ -93,7 +88,7 @@ app.delete('/', (req,res)=> {
     res.send("Delete Method!!")
 })
 
-const port=3001
-app.listen(port, ()=> {
-    console.log("Server started at port "+ port)
+
+app.listen(3001, ()=> {
+    console.log("Server started at port 3001")
 })

@@ -76,8 +76,7 @@ let currentUser;
             data[dpacno].transactions.push({
               amount:dpamt,
               type:"Credit",
-              balance:data[dpacno].balance,
-              id:Math.floor(Math.random()*100000)
+              balance:data[dpacno].balance
             })
 
             // this.saveDetails();
@@ -122,8 +121,7 @@ let currentUser;
               data[wacno].transactions.push({
                 amount:wamt,
                 type:"Debit",
-                balance:data[wacno].balance,
-                id:Math.floor(Math.random()*100000)
+                balance:data[wacno].balance
               })
             //   this.saveDetails();
               return{
@@ -151,28 +149,10 @@ let currentUser;
     return accountDetails[req.session.currentUser.acno].transactions;
   }
 
-  const delTransactions = (req, id)=> {
-    let transactions = accountDetails[req.session.currentUser.acno].transactions;
-    transactions = transactions.filter(t=>{
-      if(t.id==id){
-        return false;
-      }
-      return true;
-    })
-    accountDetails[req.session.currentUser.acno].transactions = transactions;
-    return{
-      status:true,
-      statusCode:200,
-      message : 'Transaction deleted successfull!!'
-    }
-    
-  }
-
   module.exports={
       register,
       login,
       deposit,
       withdraw,
-      getTransactions,
-      delTransactions
+      getTransactions
   }
