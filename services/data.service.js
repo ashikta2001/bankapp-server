@@ -34,14 +34,14 @@ let currentUser;
     }
   }
 
-  const login = (acno1, pwd) => {
+  const login = (req, acno1, pwd) => {
     var acno = parseInt(acno1)
     var data=accountDetails;
 
     if (acno in data){
         var password = data[acno].password
         if (pwd==password){
-          currentUser=data[acno]  
+          req.session.currentUser=data[acno]  
         //   this.saveDetails();
             return {
                 status:true,
@@ -76,7 +76,8 @@ let currentUser;
             data[dpacno].transactions.push({
               amount:dpamt,
               type:"Credit",
-              balance:data[dpacno].balance
+              balance:data[dpacno].balance,
+              id:Math.floor(Math.random()*100000)
             })
 
             // this.saveDetails();
@@ -121,7 +122,8 @@ let currentUser;
               data[wacno].transactions.push({
                 amount:wamt,
                 type:"Debit",
-                balance:data[wacno].balance
+                balance:data[wacno].balance,
+                id:Math.floor(Math.random()*100000)
               })
             //   this.saveDetails();
               return{
@@ -145,8 +147,25 @@ let currentUser;
   }  
 
 
-  const getTransactions = ()=> {
-    return accountDetails[currentUser.acno].transactions;
+  const getTransactions = (req)=> {
+    return accountDetails[req.session.currentUser.acno].transactions;
+  }
+
+  const delTransactions = (req, id)=> {
+    let transactions = accountDetails[req.session.currentUser.acno].transactions;
+    transactions = transactions.filter(t=>{
+      if(t.id==id){
+        return false;
+      }
+      return true;
+    })
+    accountDetails[req.session.currentUser.acno].transactions = transactions;
+    return{
+      status:true,
+      statusCode:200,
+      message : 'Transaction deleted successfull!!'
+    }
+    
   }
 
   module.exports={
@@ -154,5 +173,6 @@ let currentUser;
       login,
       deposit,
       withdraw,
-      getTransactions
+      getTransactions,
+      delTransactions
   }
