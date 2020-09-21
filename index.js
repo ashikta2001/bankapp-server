@@ -24,7 +24,7 @@ app.use(logMiddleware);
 
 const authMiddleware = (req, res, next) => {
     if (!req.session.currentUser){
-        return res.json({
+        return res.status(401).json({
             status:false,
             statusCode: 401,
             message:'Please Login'
@@ -93,7 +93,7 @@ app.delete('/', (req,res)=> {
     res.send("Delete Method!!")
 })
 
-
-app.listen(3001, ()=> {
-    console.log("Server started at port 3001")
+const port=3001
+app.listen(port, ()=> {
+    console.log("Server started at port "+ port)
 })
