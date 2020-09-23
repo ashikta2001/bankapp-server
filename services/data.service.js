@@ -1,3 +1,6 @@
+const { User } = require('./db');
+const db = require('./db')
+
 let accountDetails={
     1001:{name:"user1", acno:1001, pin:1234, password:'userone', balance:3000, transactions:[]},
     1002:{name:"user2", acno:1002, pin:2345, password:'usertwo', balance:2500, transactions:[]},
@@ -9,60 +12,56 @@ let accountDetails={
 let currentUser;
 
   const register=(name, acno, acpin, pwd)=>{
-    if(acno in accountDetails){
-        return {
+    return db.User.findOne({
+      acno
+    })
+    .then(user=>{
+      if(user){
+        return{
           status:false,
           statusCode: 422,
           message: 'Account already exists. Please login'
-        };
-    }
-    
-    accountDetails[acno] = {
-      name, 
-      acno, 
-      pin:acpin, 
-      password:pwd,
-      balance:0,
-      transactions:[],
-    }
-    // this.saveDetails();
-    // console.log("after",this.accountDetails)
-    return {
-        status:true,
-        statusCode: 200,
-        message:'Account Created successfully, Please login'
-    }
+        }
+      }
+      const newUser = new db.User(
+        {
+          name, 
+          acno, 
+          pin:acpin, 
+          password:pwd,
+          balance:0,
+          transactions:[]
+        });
+        newUser.save();
+        return {
+          status:true,
+          statusCode: 200,
+          message:'Account Created successfully, Please login'
+        }
+    })
+ 
   }
 
   const login = (req, acno1, pwd) => {
     var acno = parseInt(acno1)
-    var data=accountDetails;
-
-    if (acno in data){
-        var password = data[acno].password
-        if (pwd==password){
-          req.session.currentUser=data[acno]  
-        //   this.saveDetails();
-            return {
-                status:true,
-                statusCode: 200,
-                message:'Logged In successfully'
-            }
-        }
-        else{
-            return {
-                status:false,
-                statusCode: 422,
-                message:'Invalid Credentials'
-            }
-        }
-    }
-    else{
+    return db.User.findOne({
+      acno:acno,
+      password:pwd
+    })
+    .then (user=>{
+      if(user){
         return {
-            status:false,
-            statusCode: 422,
-            message:'Account No does not exists'
-        }    }
+          status:true,
+          statusCode: 200,
+          message:'Logged In successfully'
+        }
+      }
+      return {
+        status:false,
+        statusCode: 422,
+        message:'Invalid Credentials'
+      }
+    })
   }
 
   const deposit=(dpacno, dppin, dpamt1)=>{

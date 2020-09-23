@@ -44,20 +44,26 @@ app.post('/', (req,res)=> {
 })
 
 app.post('/register', (req,res)=> {
-    const result = dataService.register(req.body.name, req.body.acno, req.body.acpin, req.body.pwd);
+    // const result = dataService.register(req.body.name, req.body.acno, req.body.acpin, req.body.pwd);
+    dataService.register(req.body.name, req.body.acno, req.body.acpin, req.body.pwd)
+    .then(result=>{
+        res.status(result.statusCode).json(result);
+    })
     // res.send(result.message);
     // convert the response into a json format
     // res.json(result);
     // with status code
-    res.status(result.statusCode).json(result);
+
 })
 
 app.post('/login', (req,res)=> {
-    const result = dataService.login(req, req.body.acno, req.body.pwd);
+    dataService.login(req, req.body.acno, req.body.pwd)
+    .then(result=>{
+        res.status(result.statusCode).json(result);
+    })
     // res.send(result.message);
     // res.json(result);
     // with status code
-    res.status(result.statusCode).json(result);
 })
 
 
