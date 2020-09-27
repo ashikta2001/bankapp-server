@@ -54,7 +54,8 @@ let currentUser;
         return {
           status:true,
           statusCode: 200,
-          message:'Logged In successfully'
+          message:'Logged In successfully',
+          name: user.name
         }
       }
       return {
