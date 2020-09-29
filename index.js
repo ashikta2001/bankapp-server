@@ -74,14 +74,14 @@ app.post('/login', (req,res)=> {
 
 
 app.post('/deposit', authMiddleware, (req,res)=> {
-    dataService.deposit(req.body.dpacno, req.body.dppin, req.body.dpamt1)
+    dataService.deposit(req, req.body.dpacno, req.body.dppin, req.body.dpamt1)
     .then(result=>{
         res.status(result.statusCode).json(result);
     })
 })
 
 app.post('/withdraw', authMiddleware, (req,res)=> {
-    dataService.withdraw(req.body.wacno, req.body.wpin, req.body.wamt1)
+    dataService.withdraw(req, req.body.wacno, req.body.wpin, req.body.wamt1)
     .then(result=>{
         res.status(result.statusCode).json(result);
     })

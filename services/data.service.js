@@ -66,13 +66,21 @@ let currentUser;
     })
   }
 
-  const deposit=(dpacno, dppin, dpamt1)=>{
+  const deposit=(req, dpacno, dppin, dpamt1)=>{
     var dpamt=parseInt(dpamt1)
     return db.User.findOne({
       acno: dpacno,
       pin: dppin
     })    
     .then(user=>{
+      if(req.session.currentUser!=dpacno){
+        return{
+          status:false,
+          statusCode: 422,
+          message:'You are not allowed to deposit to other accounts!!!!',
+          balance:user.balance
+        }
+      }
       if(!user){
         return{
           status:false,
@@ -97,7 +105,7 @@ let currentUser;
     })
   }
 
-  const withdraw = (wacno, wpin, wamt1) => {
+  const withdraw = (req, wacno, wpin, wamt1) => {
     var wamt= parseInt(wamt1)
     return db.User.findOne({
       acno:wacno,
@@ -109,6 +117,14 @@ let currentUser;
           status:false,
           statusCode: 422,
           message:'Incorrect Account Details',
+          balance:user.balance
+        }
+      }
+      if(req.session.currentUser!=wacno){
+        return{
+          status:false,
+          statusCode: 422,
+          message:'You are not allowed to withdraw from other accounts!!!!',
           balance:user.balance
         }
       }
