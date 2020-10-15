@@ -42,6 +42,11 @@ let currentUser;
  
   }
 
+  const logout = (req) => {
+    req.session.currentUser="";
+    return;
+  }
+
   const login = (req, acno1, pwd) => {
     var acno = parseInt(acno1)
     return db.User.findOne({
@@ -189,6 +194,7 @@ let currentUser;
 
   module.exports={
       register,
+      logout,
       login,
       deposit,
       withdraw,

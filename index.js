@@ -6,8 +6,8 @@ const cors=require('cors');
 const app = express();
 
 app.use(cors({
-    // origin:'http://localhost:4200',
-    origin:'http://localhost:3000', // react port 3000
+    origin:'http://localhost:4200', // for angular port 4200
+     // origin:'http://localhost:3000', // react port 3000
     credentials:true
 }))
 
@@ -71,6 +71,15 @@ app.post('/login', (req,res)=> {
     // res.send(result.message);
     // res.json(result);
     // with status code
+})
+
+app.post('/logout', (req,res)=> {
+    dataService.logout(req)
+    res.status(200).json({
+        status:true,
+        statusCode:200,
+        message:"User Logged out successfully!!!"
+    });
 })
 
 
