@@ -44,7 +44,12 @@ let currentUser;
 
   const logout = (req) => {
     req.session.currentUser="";
-    return;
+    return {
+      status:true,
+      statusCode: 200,
+      message:'Logged Out successfully',
+      name: user.name
+    }
   }
 
   const login = (req, acno1, pwd) => {
@@ -194,8 +199,8 @@ let currentUser;
 
   module.exports={
       register,
-      logout,
       login,
+      logout,
       deposit,
       withdraw,
       getTransactions,
